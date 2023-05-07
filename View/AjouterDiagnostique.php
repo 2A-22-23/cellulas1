@@ -3,17 +3,19 @@ include  "../Controller/DiagnostiqueC.php";
 include  "../Controller/TerreC.php";
 include "../Model/Diagnostique.php";
 
+session_start();
+
 $terreC= new TerreC();
 $diagnostiqueC= new DiagnostiqueC();
 if (isset($_GET['id'])){
 
     $result=$terreC->afficherTerreWithID($_GET['id']);
     foreach($result as $row){
-    $id=$row['id'];
-    $nom=$row['nom'];
-    $largeur=$row['largeur'];
-    $longeur=$row['longeur'];
-    $echantillon=$row['echantillon'];
+        $id=$row['id'];
+        $nom=$row['nom'];
+        $largeur=$row['largeur'];
+        $longeur=$row['longeur'];
+        $echantillon=$row['echantillon'];
       
         }
     }
@@ -33,7 +35,7 @@ if(isset($_POST['Ajouter']))
 if( isset($_POST['datediag']) and isset($_POST['description'])){
 
     
-    $diagnostique=new Diagnostique(1,$_GET['id'],$_POST['datediag'],"En Attente",$_POST['description']);
+    $diagnostique=new Diagnostique($_SESSION['idclient'],$_GET['id'],$_POST['datediag'],"En Attente",$_POST['description']);
 
     //Partie3
     $diagnostiqueC = new DiagnostiqueC();
@@ -257,8 +259,7 @@ if( isset($_POST['datediag']) and isset($_POST['description'])){
             <!-- .container -->
         </section>
         <!-- End Service Style2 Section -->
-
-
+        <?php if(isset($_SESSION['client'])) { ?>
         <!-- Start Contact us Section -->
         <section class="bg-contact-us">
             <div class="container">
@@ -302,6 +303,9 @@ if( isset($_POST['datediag']) and isset($_POST['description'])){
             <!-- .container -->
         </section>
         <!-- End Contact us Section -->
+
+                                        <?php  } ?>
+
 
         <!-- Start Footer Section -->
         <?php include'footer.php' ?>

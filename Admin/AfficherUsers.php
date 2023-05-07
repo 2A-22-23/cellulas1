@@ -1,22 +1,21 @@
 <?php
-
-include  "../Controller/CategorieC.php";
-include  "../Controller/ProduitC.php";
-
 session_start();
 
-if(!isset($_SESSION['login']))
 
+
+if($_SESSION['login']=="")
 {
 
     header("location: signup.php");
 }
 
-$catC= new CategorieC();
-$prodC= new ProduitC();
 
-$liste=$catC->afficherCategories();
-$listee=$catC->afficherCategories();
+
+include  "../Model/client.php";
+include  "../Controller/ClientC.php";
+
+$clientc= new ClientC();
+$liste=$clientc->afficherClients();
 
 ?>
 
@@ -48,7 +47,7 @@ $listee=$catC->afficherCategories();
             }
         </script>
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
@@ -56,15 +55,10 @@ $listee=$catC->afficherCategories();
         function drawChart() {
 
             var data = google.visualization.arrayToDataTable([
-                ['Categorie', 'Produit'],
-                <?php
-                    foreach ($listee as $row1){
-                ?>
-                ['<?php echo $row1['nom']; ?>', <?php echo $prodC->recupererProduitByCategory($row1['id'])->rowCount();  ?>],
-                <?php
-                }
-                ?>
-                ['', 0]
+                ['Client', 'Etat'],
+                ['Bloquer', <?php echo $clientc->recupererClientByEtat("Bloquer")->rowCount();  ?>],
+                ['Vérifé', <?php echo $clientc->recupererClientByEtat("Vérifé")->rowCount();  ?>],
+                ['Non Vérifé', <?php echo $clientc->recupererClientByEtat("Non Vérifé")->rowCount();  ?>]
             ]);
 
             var options = {
@@ -76,7 +70,6 @@ $listee=$catC->afficherCategories();
             chart.draw(data, options);
         }
     </script>
-
     </head>
     <body>
         <div class="main-wrapper">
@@ -88,8 +81,8 @@ $listee=$catC->afficherCategories();
                 <div class="mobile-menu-handle"></div>
                 <article class="content responsive-tables-page">
                     <div class="title-block">
-                        <h1 class="title"> Categories </h1>
-                        <p class="title-description"> Afficher Categories </p>
+                        <h1 class="title"> Users </h1>
+                        <p class="title-description"> Afficher Users </p>
                     </div>
                     <section class="section">
                         <div class="row">
@@ -97,9 +90,8 @@ $listee=$catC->afficherCategories();
                                 <div class="card">
                                     <div class="card-block">
                                         <div class="card-title-block">
-                                            <h3 class="title"> Categories </h3>
+                                            <h3 class="title"> Users </h3>
                                         </div>
-                                        <a href="AjouterCategorie.php"  class="btn btn-primary "> Ajouter </a>
                                         <div id="piechart" style="width: 900px; height: 500px;"></div>
 
                                         <section class="example">
@@ -107,33 +99,46 @@ $listee=$catC->afficherCategories();
                                                 <table class="table table-striped table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                        <th>Nom</th>
-                                                        <th>Date Creation</th>
-                                                        <th>Date modification</th>
-                                                        <th>Action</th>
+                                                        <th scope="col">Last Name</th>
+                                                        <th scope="col" >First Name</th>
+                                                        <th scope="col" >Email</th>
+                                                        <th scope="col" >Telephone</th>
+                                                        <th scope="col" >Adress</th>
+                                                        <th scope="col" >Sexe</th>
+                                                        <th scope="col" >Date Of Birth</th>
+                                                        <th scope="col" >Photo</th>
+                                                        <th scope="col" >Role</th>
+                                                        <th scope="col" >Statut</th>
+                                                        <th scope="col" >Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                     <?php
-                                                        foreach($liste as $row){
-                                                    ?>
-                                                    <tr>
-                                                        <td><?php echo $row['nom']; ?></td>
-                                                        <td><?php echo $row['date_creation']; ?></td>
-                                                        <td><?php echo $row['date_modif']; ?></td>
-                                                        <td>
-                                                            <form method="POST" action="ModifierCategorie.php?id=<?PHP echo $row['id']; ?>">
-                                                                <input type="submit" class="btn btn-warning" value= "Modifier">
-                                                            </form>
-                                                        <form method="POST" action="supprimerCategorie.php">
-                                                                <input type="submit" class="btn btn-danger" value= "supprimer">
-                                                                <input type="hidden" value="<?PHP echo $row['id']; ?>" name="id">
-                                                            </form>
-                                                        </td>
-                                                    </tr>
-                                                        <?php
-                                                            }
-                                                        ?>           
+                                        foreach($liste as $row){
+                                            ?>
+                                              <tr>
+                                                  <td><?php echo $row['nom']; ?></td>
+                                                  <td><?php echo $row['prenom']; ?></td>
+                                                  <td><?php echo $row['email']; ?></td>
+                                                  <td><?php echo $row['tel']; ?></td>
+                                                  <td><?php echo $row['adresse']; ?></td>
+                                                  <td><?php echo $row['sexe']; ?></td>
+                                                  <td><?php echo $row['date_nais']; ?></td>
+                                                  <td><img src="../View/<?php echo $row['image']; ?>" heigth="200" width=150></td>
+                                                  <td><?php echo $row['role']; ?></td>
+                                                  <td><?php echo $row['statut']; ?></td>
+                                                  <td>
+                                                      <?php if($row['statut'] == "Vérifé"){ ?>
+                                                          <a class="btn btn-danger" href="BloquerClient.php?id=<?PHP echo $row['id']; ?>">Bloquer</a>
+                                                      <?php } ?>
+                                                      <?php if($row['statut'] == "Bloquer"){ ?>
+                                                          <a class="btn btn-success" href="DebloquerClient.php?id=<?PHP echo $row['id']; ?>">Débloquer</a>
+                                                      <?php } ?>
+                                                  </td>
+                                              </tr>
+                                                      <?php
+                                                  }
+                                                              ?>           
                                                     </tbody>
                                                 </table>
                                             </div>

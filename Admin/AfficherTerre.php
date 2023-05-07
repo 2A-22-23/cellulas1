@@ -2,6 +2,15 @@
 include  "../Controller/TerreC.php";
 include  "../Controller/DiagnostiqueC.php";
 
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
+
 $terreC= new TerreC();
 $diagnostiqueC= new DiagnostiqueC();
 

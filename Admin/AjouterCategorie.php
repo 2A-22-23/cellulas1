@@ -3,6 +3,15 @@
 include "../Model/Categorie.php";
 include "../Controller/CategorieC.php";
 
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
+
 if(isset($_POST['Ajouter']))
 {
 if( isset($_POST['nom']) ){

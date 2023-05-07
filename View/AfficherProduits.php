@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 include  "../Controller/CategorieC.php";
 include  "../Controller/ProduitC.php";
 include('database_connection.php');

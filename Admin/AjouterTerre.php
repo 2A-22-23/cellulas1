@@ -3,6 +3,16 @@
 include "../Model/Terre.php";
 include "../Controller/TerreC.php";
 
+
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
+
 if(isset($_POST['Ajouter']))
 {
 if( isset($_POST['nom']) and isset($_POST['largeur']) and isset($_POST['longeur']) and isset($_POST['echantillon'])){

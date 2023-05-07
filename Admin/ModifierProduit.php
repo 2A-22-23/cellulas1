@@ -3,6 +3,14 @@ include "../Model/Produit.php";
 include "../Controller/ProduitC.php";
 
 include  "../Controller/CategorieC.php";
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
 
 $catC= new CategorieC();
     $listeCat=$catC->afficherCategories();
@@ -260,6 +268,7 @@ $prodC->modifierProduit($prod,$_GET['id']);
         </script>
         <script src="js/vendor.js"></script>
         <script src="js/app.js"></script>
+
 
         <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.js"></script>
         <script src="js/Produit.js"></script>

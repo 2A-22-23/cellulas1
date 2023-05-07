@@ -1,4 +1,15 @@
-<!doctype html>
+<?php
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
+
+?>
+    <!doctype html>
 <html class="no-js" lang="en">
     
 <meta http-equiv="content-type" content="text/html;charset=utf-8" />

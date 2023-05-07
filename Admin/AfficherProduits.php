@@ -2,6 +2,15 @@
 include  "../Controller/CategorieC.php";
 include  "../Controller/ProduitC.php";
 
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
+
 $catC= new CategorieC();
 $prodC= new ProduitC();
     $liste=$prodC->afficherProduits();

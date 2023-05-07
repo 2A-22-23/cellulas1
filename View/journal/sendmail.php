@@ -1,7 +1,7 @@
 <?php
 require_once('class.phpmailer.php');
 $email=$_GET['email'];
-$status=$_GET['status'];
+$token=$_GET['token'];
 
 //include("class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 
@@ -22,9 +22,9 @@ try {
   $mail->AddReplyTo('iadh.ferjaoui@esprit.tn', 'Ecolayer');
   $mail->AddAddress($email);
   $mail->SetFrom('iadh.ferjaoui@esprit.tn', 'Ecolayer');
-  $mail->Subject = 'Diagnostique Statut';
+  $mail->Subject = 'Mot de passe oublie';
   echo $token;
-  $mail->Body = 'Votre Diagnostique est : '.$status; // optional - MsgHTML will create an alternate automatically
+  $mail->Body = 'Votre mot de passe de recuperation: '.$token; // optional - MsgHTML will create an alternate automatically
   $mail->AltBody ="";
   
   $mail->Send();
@@ -32,7 +32,7 @@ try {
    
     echo "<script type='text/javascript'>";
 echo "alert('Verifiez-votre boite mail!');
-window.location.href='../Connexion.php';";
+window.location.href='../SignIn.php';";
 echo "</script>";
 
 

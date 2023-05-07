@@ -1,7 +1,7 @@
 <?php
 require_once('class.phpmailer.php');
 $email=$_GET['email'];
-$status=$_GET['status'];
+$token='http://localhost/ecolayer/View/verifierCompte.php?email='.$email;
 
 //include("class.smtp.php"); // optional, gets called from within class.phpmailer.php if not already loaded
 
@@ -22,17 +22,16 @@ try {
   $mail->AddReplyTo('iadh.ferjaoui@esprit.tn', 'Ecolayer');
   $mail->AddAddress($email);
   $mail->SetFrom('iadh.ferjaoui@esprit.tn', 'Ecolayer');
-  $mail->Subject = 'Diagnostique Statut';
-  echo $token;
-  $mail->Body = 'Votre Diagnostique est : '.$status; // optional - MsgHTML will create an alternate automatically
+  $mail->Subject = 'Validée Email';
+  $mail->Body = 'Verifier Mail via ce lien : '.$token; // optional - MsgHTML will create an alternate automatically
   $mail->AltBody ="";
   
   $mail->Send();
     echo "Message Sent OK</p>\n";
    
     echo "<script type='text/javascript'>";
-echo "alert('Verifiez-votre boite mail!');
-window.location.href='../Connexion.php';";
+    echo "alert('You are registered! Validée votre Email!');
+    window.location.href='../SignIn.php';";
 echo "</script>";
 
 

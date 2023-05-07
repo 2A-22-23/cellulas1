@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 include "../Model/Produit.php";
 include "../Controller/ProduitC.php";
 

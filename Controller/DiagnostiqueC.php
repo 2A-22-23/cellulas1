@@ -28,6 +28,21 @@ class DiagnostiqueC
             die('Error:' . $e->getMessage());
         }
     }
+    function supprimerDiagparTerre($id)
+    {
+        $sql = "DELETE FROM diagnostique WHERE id_terre = :id";
+        $db = config::getConnexion();
+        $req = $db->prepare($sql);
+        $req->bindValue(':id', $id);
+
+        try {
+            $req->execute();
+        } catch (Exception $e) {
+            die('Error:' . $e->getMessage());
+        }
+    }
+
+    
 
     public function afficherDiagWithID($id){
         $sql="SELECT * From diagnostique where id=$id";
@@ -43,7 +58,7 @@ class DiagnostiqueC
 
 
     public function afficherUserName($id){
-        $sql="SELECT * From client where id_client=$id";
+        $sql="SELECT * From client where id=$id";
         $db=config::getConnexion();
         try{
         $liste=$db->query($sql);
@@ -187,18 +202,4 @@ class DiagnostiqueC
         }
     }
     
-    function supprimerDiagparTerre($id)
-    {
-        $sql = "DELETE FROM diagnostique WHERE id_terre = :id";
-        $db = config::getConnexion();
-        $req = $db->prepare($sql);
-        $req->bindValue(':id', $id);
-
-        try {
-            $req->execute();
-        } catch (Exception $e) {
-            die('Error:' . $e->getMessage());
-        }
-    }
-
 }

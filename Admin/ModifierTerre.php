@@ -3,6 +3,16 @@
 include "../Model/Terre.php";
 include "../Controller/TerreC.php";
 
+
+session_start();
+
+if(!isset($_SESSION['login']))
+
+{
+
+    header("location: signup.php");
+}
+
 if (isset($_GET['id'])){
 
     $terreC = new TerreC();

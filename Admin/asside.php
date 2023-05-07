@@ -17,6 +17,10 @@
                                         <i class="fa fa-home"></i> Dashboard </a>
                                 </li>
                                 <li >
+                                    <a href="AfficherUsers.php">
+                                        <i class="fa fa-home"></i> User </a>
+                                </li>
+                                <li >
                                     <a href="AfficherTerre.php">
                                         <i class="fa fa-home"></i> Terre </a>
                                 </li>

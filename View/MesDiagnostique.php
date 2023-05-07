@@ -2,11 +2,12 @@
 include  "../Controller/DiagnostiqueC.php";
 include  "../Controller/TerreC.php";
 include "../Model/Diagnostique.php";
+session_start();
 
 $terreC= new TerreC();
 $diagnostiqueC= new DiagnostiqueC();
 
-    $liste=$diagnostiqueC->MyDiagnostique(1);
+    $liste=$diagnostiqueC->MyDiagnostique($_SESSION['idclient']);
 
 
         

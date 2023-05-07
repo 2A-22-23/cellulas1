@@ -50,6 +50,17 @@ function recupererProduitByCategory($id_categorie){
         die('Erreur: '.$e->getMessage());
     }
 }
+function selectlimite($this_page_first_result,$results_per_page){
+    $sql='SELECT * FROM produit LIMIT ' . $this_page_first_result . ',' .  $results_per_page;
+    $db = config::getConnexion();
+    try{
+        $liste=$db->query($sql);
+        return $liste;
+    }
+    catch (Exception $e){
+        die('Erreur: '.$e->getMessage());
+    }
+}
 
 
     function rechercherProduit($str){
@@ -140,6 +151,19 @@ public function ajouterProduit($Produit){
 }
 public function supprimerProduit($id){
     $sql="DELETE FROM Produit where id=:id";
+    $db=config::getConnexion();
+    try{
+    $req=$db->prepare($sql);
+    $req->bindValue(':id',$id);
+    $req->execute();
+    }
+    catch(Exception $e){
+        die('Erreur:' .$e->getMessage());
+    }
+    
+}
+public function supprimerProduitParCategory($id){
+    $sql="DELETE FROM Produit where id_categorie=:id";
     $db=config::getConnexion();
     try{
     $req=$db->prepare($sql);
