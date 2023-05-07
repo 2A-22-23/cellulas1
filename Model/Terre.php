@@ -1,48 +1,107 @@
 <?php
 class Terre
 {
-    private $id ;
-    private $nom ;
-    private $largeur ;
-    private $longeur ;
-    private $echantillon;
+    private ?string $id_terre = null;
+    private ?float $largeur = null;
+    private ?float $longeur = null;
+    private ?string $agricole = null;
+    private ?DateTime $labo = null;
 
-    public function __construct( $nom,$largeur, $longeur, $echantillon)
+    public function __construct($id = null, $l, $du, $nb, $d)
     {
-        $this->nom = $nom;
-        $this->largeur = $largeur;
-        $this->longeur = $longeur;
-        $this->echantillon = $echantillon;
+        $this->id_terre = $id;
+        $this->largeur = $l;
+        $this->longeur = $du;
+        $this->agricole = $nb;
+        $this->labo = $d;
     }
 
-    function getId(){
-        return $this->id;
+    /**
+     * Get the value of id_terre
+     */
+    public function getid_terre()
+    {
+        return $this->id_terre;
     }
-    function getNom(){
-        return $this->nom;
-    }
-    function setNom($nom){
-        $this->nom=$nom;
-    }
-    function getLargeur(){
+
+    /**
+     * Get the value of largeur
+     */
+    public function getlargeur()
+    {
         return $this->largeur;
     }
-    function setLargeur($largeur){
-        $this->largeur=$largeur;
+
+    /**
+     * Set the value of largeur
+     *
+     * @return  self
+     */
+    public function setlargeur($largeur)
+    {
+        $this->largeur = $largeur;
+
+        return $this;
     }
-    function getLongeur(){
+
+    /**
+     * Get the value of longeur
+     */
+    public function getlongeur()
+    {
         return $this->longeur;
     }
-    function setLongeur($longeur){
-        $this->longeur=$longeur;
-    }
-    function getEchantillon(){
-        return $this->echantillon;
-    }
-    function setEchantillon($echantillon){
-        $this->echantillon=$echantillon;
+
+    /**
+     * Set the value of longeur
+     *
+     * @return  self
+     */
+    public function setlongeur($longeur)
+    {
+        $this->longeur = $longeur;
+
+        return $this;
     }
 
+    /**
+     * Get the value of agricole
+     */
+    public function getagricole()
+    {
+        return $this->agricole;
+    }
 
+    /**
+     * Set the value of agricole
+     *
+     * @return  self
+     */
+    public function setagricole($agricole)
+    {
+        $this->agricole = $agricole;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of labo
+     */
+    public function getlabo()
+    {
+        return $this->labo;
+    }
+
+    /**
+     * Set the value of labo
+     *
+     * @return  self
+     */
+    public function setlabo($labo)
+    {
+        $this->labo = $labo;
+
+        return $this;
+    }
 }
 ?>

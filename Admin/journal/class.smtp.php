@@ -388,8 +388,7 @@ class SMTP {
 
     $max_line_length = 998; // used below; set here for ease in change
 
-      foreach ($lines as $i => $line) {
-
+    while(list(,$line) = @each($lines)) {
       $lines_out = null;
       if($line == "" && $in_headers) {
         $in_headers = false;
@@ -418,8 +417,7 @@ class SMTP {
       $lines_out[] = $line;
 
       // send the lines to the server
-      foreach ($lines_out as $i => $line_out) {
-
+      while(list(,$line_out) = @each($lines_out)) {
         if(strlen($line_out) > 0)
         {
           if(substr($line_out, 0, 1) == ".") {

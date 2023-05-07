@@ -624,18 +624,11 @@ $prodC= new ProduitC();
                         <!-- .section-header -->
                         <div class="row">
 
-                                <?php
-                        // connect to database
-                        $con = mysqli_connect('localhost','root','');
-                        mysqli_select_db($con, 'ecolayer');
-
-                        // define how many results you want per page
+                        <?php
                         $results_per_page = 4;
 
                         // find out the number of results stored in database
-                        $sql='SELECT * FROM produit';
-                        $result = mysqli_query($con, $sql);
-                        $number_of_results = mysqli_num_rows($result);
+                        $number_of_results =  $liste->rowCount();
 
                         // determine number of total pages available
                         $number_of_pages = ceil($number_of_results/$results_per_page);
@@ -651,43 +644,40 @@ $prodC= new ProduitC();
                         $this_page_first_result = ($page-1)*$results_per_page;
 
                         // retrieve selected results from database and display them on page
-                        $sql='SELECT * FROM produit LIMIT ' . $this_page_first_result . ',' .  $results_per_page;
-                        $result = mysqli_query($con, $sql);
-
-                        while($row = mysqli_fetch_array($result)) {
-                            
-                        echo '
+                        
+                        $result = $prodC->selectlimite($this_page_first_result,$results_per_page);
+                        foreach($result as $row){
+                            ?>
                                                 <div class="col-lg-3 col-sm-6 col-12">
                                                 <div class="collection-items">
                                                     <div class="collection-img">
                                                         <div class="collection-overlay"></div>
-                                                        <img src="../Admin/'.$row['image'].'" alt="collection-img-1" />
+                                                        <img src="../Admin/<?php echo $row['image']?>" alt="collection-img-1" />
                                                         <ul class="collection-icon">
                                                             <li><a href="#"><i class="fa fa-heart-o" aria-hidden="true"></i></a></li>
                                                             <li><a href="#"><i class="fa fa-cart-plus" aria-hidden="true"></i></a></li>
-                                                            <li><a href="../Admin/'.$row['image'].'" data-rel="lightcase:myCollection"><i class="fa fa-search" aria-hidden="true"></i></a></li>
+                                                            <li><a href="../Admin/<?php echo $row['image'] ?>" data-rel="lightcase:myCollection"><i class="fa fa-search" aria-hidden="true"></i></a></li>
                                                         </ul>
                                                     </div>
                                                     <!-- .collection-img -->
                                                     <div class="collection-content">
-                                                        <h4><a href="AfficherProd.php?id='.$row['id'].'">Nom : '.$row['nom'].'</a></h4>
-                                                        <h5>Prix : '.$row['prix'].' TND</h5>
-                                                        <h5>';
-                                                                    $resultaa = $catC->afficherCategorieWithID($row["id_categorie"]);
+                                                        <h4><a href="AfficherProd.php?id=<?php echo $row['id'] ?>">Nom : <?php echo $row['nom'] ?></a></h4>
+                                                        <h5>Prix : <?php echo $row['prix'] ?> TND</h5>
+                                                        <h5>
+
+                                                        <?php        $resultaa = $catC->afficherCategorieWithID($row["id_categorie"]);
                                                                     foreach($resultaa as $row2)
                                                                     { 
                                                                         echo "Categorie : ".$row2['nom'];
-                                                                    }
-                                                                    echo'
+                                                                    } ?>
                                                                     </h5>
-                                                        <h6>Info : '.$row['informations'].'</h6>
+                                                        <h6>Info : <? echo $row['informations'] ?></h6>
                                                     </div>
                                                     <!-- .collection-content -->
                                                 </div>
                                                 <!-- .collection-items -->
-                                                </div>';
-                                                }
-                                                ?>
+                                                </div>
+                                                <?php } ?>
                                             <div class="pagination-option">
                                                 <nav aria-label="Page navigation">
                                                     <ul class="pagination">

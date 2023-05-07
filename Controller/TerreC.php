@@ -1,5 +1,6 @@
 <?php
-require_once '../config.php';
+include '../config.php';
+include '../Model/Terre.php';
 
 class TerreC
 {
@@ -15,18 +16,6 @@ class TerreC
             return $terre;
         } catch (Exception $e) {
             die('Error: ' . $e->getMessage());
-        }
-    }
-
-    function rechercherTerre($str){
-        $sql="select * from terre where nom like '%".$str."%' or largeur like '%".$str."%' or longeur like '%".$str."%'or echantillon like '%".$str."%'";
-        $db = config::getConnexion();
-        try{
-            $liste=$db->query($sql);
-            return $liste;
-        }
-        catch (Exception $e){
-            return $e->getMessage();
         }
     }
 
@@ -58,90 +47,6 @@ class TerreC
         }
     }
 
-    
-
-
-
-    public function afficherTerreWithID($id){
-        $sql="SELECT * From terre where id=$id";
-        $db=config::getConnexion();
-        try{
-        $liste=$db->query($sql);
-        return $liste;
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-    }
-
-    public function addTerre($terre){
-        $sql="insert into terre(nom,largeur,longeur,echantillon) values(:nom,:largeur,:longeur,:echantillon)";
-        $db=config::getConnexion();
-        try{
-        $req=$db->prepare($sql);
-            $nom=$terre->getNom();
-            $largeur=$terre->getLargeur();
-            $longeur=$terre->getLongeur();
-            $echantillon=$terre->getEchantillon();
-            $req->bindValue(':nom',$nom);
-            $req->bindValue(':largeur',$largeur);
-            $req->bindValue(':longeur',$longeur);
-            $req->bindValue(':echantillon',$echantillon);
-    
-        $req->execute();
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-        
-    }
-
-    public function supprimerTerre($id){
-        $sql="DELETE FROM terre where id=:id";
-        $db=config::getConnexion();
-        try{
-        $req=$db->prepare($sql);
-        $req->bindValue(':id',$id);
-        $req->execute();
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-        
-    }
-
-    function modifierTerre($terre,$id){
-        $sql="UPDATE terre SET nom=:nom,largeur=:largeur,longeur=:longeur,echantillon=:echantillon  WHERE id=:id";
-        
-        $db = config::getConnexion();
-        //$db->sProduittribute(PDO::ATTR_EMULATE_PREPARES,false);
-try{        
-        $req=$db->prepare($sql);
-        $nom=$terre->getNom();
-        $largeur=$terre->getLargeur();
-        $longeur=$terre->getLongeur();
-        $echantillon=$terre->getEchantillon();
-        $req->bindValue(':nom',$nom);
-        $req->bindValue(':largeur',$largeur);
-        $req->bindValue(':longeur',$longeur);
-        $req->bindValue(':echantillon',$echantillon);
-        $req->bindValue(':id',$id);
-    
-            $s=$req->execute();
-           // header('Location: index.php');
-        }
-        catch (Exception $e){
-            echo " Erreur ! ".$e->getMessage();
-        }
-        
-    }
-
-    
-    
-    
-
-
-    
     function bookTerre($id_terre, $labo)
     {
         $sql = "INSERT INTO reservation  

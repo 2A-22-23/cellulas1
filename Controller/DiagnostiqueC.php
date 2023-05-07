@@ -1,5 +1,6 @@
 <?php
-require_once '../config.php';
+include '../config.php';
+include '../Model/Diagnostique.php';
 
 class DiagnostiqueC
 {
@@ -17,7 +18,7 @@ class DiagnostiqueC
 
     function deleteDiagnostique($id)
     {
-        $sql = "DELETE FROM diagnostique WHERE id = :id";
+        $sql = "DELETE FROM diagnostique WHERE id_diag = :id";
         $db = config::getConnexion();
         $req = $db->prepare($sql);
         $req->bindValue(':id', $id);
@@ -29,176 +30,63 @@ class DiagnostiqueC
         }
     }
 
-    public function afficherDiagWithID($id){
-        $sql="SELECT * From diagnostique where id=$id";
-        $db=config::getConnexion();
-        try{
-        $liste=$db->query($sql);
-        return $liste;
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-    }
-
-
-    public function afficherUserName($id){
-        $sql="SELECT * From client where id_client=$id";
-        $db=config::getConnexion();
-        try{
-        $liste=$db->query($sql);
-        return $liste;
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-    }
-
-
-    public function addDiagnostique($diagnostique){
-        $sql="insert into diagnostique(id_client,id_terre,date_diag,status,description) values(:id_client,:id_terre,:date_diag,:status,:description)";
-        $db=config::getConnexion();
-        try{
-        $req=$db->prepare($sql);
-            $id_client=$diagnostique->getIdClient();
-            $id_terre=$diagnostique->getIdTerre();
-            $date_diag=$diagnostique->getDateDiag();
-            $status=$diagnostique->getStatus();
-            $description=$diagnostique->getDescription();
-            //$date = date('d-m-y h:i:s')
-            $req->bindValue(':id_client',$id_client);
-            $req->bindValue(':id_terre',$id_terre);
-            $req->bindValue(':date_diag',$date_diag);
-            $req->bindValue(':status',$status);
-            $req->bindValue(':description',$description);
-    
-        $req->execute();
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-        
-    }
-    public function updateDiagnostique($diagnostique, $id){
-        $sql="UPDATE diagnostique SET id_terre=:id_terre,date_diag=:date_diag,status=:status,description=:description  WHERE id=:id";
-
-        $db=config::getConnexion();
-        try{
-        $req=$db->prepare($sql);
-            $id_client=$diagnostique->getIdClient();
-            $id_terre=$diagnostique->getIdTerre();
-            $date_diag=$diagnostique->getDateDiag();
-            $status=$diagnostique->getStatus();
-            $description=$diagnostique->getDescription();
-            //$date = date('d-m-y h:i:s')
-            $req->bindValue(':id',$id);
-            $req->bindValue(':id_terre',$id_terre);
-            $req->bindValue(':date_diag',$date_diag);
-            $req->bindValue(':status',$status);
-            $req->bindValue(':description',$description);
-    
-        $req->execute();
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-        
-    }
-    
-
-    function approuver($id)
+    function addDiagnostique($diagnostique)
     {
-    $sql="UPDATE diagnostique SET status='Approuvé' WHERE id=:id";
-    $db = config::getConnexion();
-    try
-        {
-        $req=$db->prepare($sql);
-        $req->bindValue(':id',$id);
-        $req->execute();
-        }
-    catch (Exception $e)
-        {
-            echo 'Erreur: '.$e->getMessage();
-        }
-    }
-    function refuse($id)
-    {
-        $sql="UPDATE diagnostique SET status='Refusé' WHERE id=:id";
+        $sql = "INSERT INTO diagnostique  
+        VALUES (NULL, :fn,:ln,:dob)";
         $db = config::getConnexion();
-        try
-            {
-            $req=$db->prepare($sql);
-            $req->bindValue(':id',$id);
-            $req->execute();
-            }
-        catch (Exception $e)
-            {
-                echo 'Erreur: '.$e->getMessage();
-            }
-    }
-    
-    function recupererDiagByTerre($id_Terre){
-        $sql="SELECT * from Diagnostique where id_terre='$id_Terre'";
-        $db = config::getConnexion();
-        try{
-            $liste=$db->query($sql);
-            return $liste;
-        }
-        catch (Exception $e){
-            die('Erreur: '.$e->getMessage());
-        }
-    }
-
-
-    
-    public function showDiagnostiqueApprouve($id){
-        $sql="SELECT * From Diagnostique where id_terre=$id and status='Approuvé'";
-        $db=config::getConnexion();
-        try{
-        $liste=$db->query($sql);
-        return $liste;
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-    }
-
-
-    public function showDiagnostique($id){
-        $sql="SELECT * From Diagnostique where id_terre=$id";
-        $db=config::getConnexion();
-        try{
-        $liste=$db->query($sql);
-        return $liste;
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-    }
-    public function MyDiagnostique($id){
-        $sql="SELECT * From Diagnostique where id_client=$id";
-        $db=config::getConnexion();
-        try{
-        $liste=$db->query($sql);
-        return $liste;
-        }
-        catch(Exception $e){
-            die('Erreur:' .$e->getMessage());
-        }
-    }
-    
-    function supprimerDiagparTerre($id)
-    {
-        $sql = "DELETE FROM diagnostique WHERE id_terre = :id";
-        $db = config::getConnexion();
-        $req = $db->prepare($sql);
-        $req->bindValue(':id', $id);
-
         try {
-            $req->execute();
+            print_r($diagnostique->getDob()->format('Y-m-d'));
+            $query = $db->prepare($sql);
+            $query->execute([
+                'fn' => $diagnostique->getid_client(),
+                'ln' => $diagnostique->getid_terre(),
+               
+                'dob' => $diagnostique->getDob()->format('Y/m/d')
+            ]);
         } catch (Exception $e) {
-            die('Error:' . $e->getMessage());
+            echo 'Error: ' . $e->getMessage();
         }
     }
 
+    function updateDiagnostique($diagnostique, $id)
+    {
+        try {
+            $db = config::getConnexion();
+            $query = $db->prepare(
+                'UPDATE Diagnostique SET 
+                    id_client = :id_client, 
+                    id_terre = :id_terre, 
+                    date_diag = :date_diag
+                WHERE id_diag= :id_diag'
+            );
+            $query->execute([
+                'id_diag' => $id,
+                'id_client' => $diagnostique->getid_client(),
+                'id_terre' => $diagnostique->getid_terre(),
+                
+                'date_diag' => $diagnostique->getDob()->format('Y/m/d')
+            ]);
+            echo $query->rowCount() . " records UPDATED successfully <br>";
+        } catch (PDOException $e) {
+            $e->getMessage();
+        }
+    }
+
+    function showDiagnostique($id)
+    {
+        $sql = "SELECT * from Diagnostique where id_diag= $id";
+        $db = config::getConnexion();
+        try {
+            $query = $db->prepare($sql);
+            $query->execute();
+
+            $diagnostique = $query->fetch();
+            return $diagnostique;
+        } catch (Exception $e) {
+            die('Error: ' . $e->getMessage());
+        }
+        
+    }
+    
 }
