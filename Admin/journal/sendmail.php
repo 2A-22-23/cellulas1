@@ -17,13 +17,12 @@ try {
   $mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
   $mail->Port       = 465;                   // set the SMTP port for the GMAIL server
   $mail->isHTML(true);
-  $mail->Username   = "@";  // GMAIL username
-  $mail->Password   = "";            // GMAIL password
-  $mail->AddReplyTo('wajih.mejri@esprit.tn', 'wajih');
+  $mail->Username   = "nesrine.aissaoui@esprit.tn";  // GMAIL username
+  $mail->Password   = "211JFT1329";            // GMAIL password
+  $mail->AddReplyTo('nesrine.aissaoui@esprit.tn', 'Nesrine');
   $mail->AddAddress($email);
-  $mail->SetFrom('wajih.mejri@esprit.tn', 'wajih');
+  $mail->SetFrom('nesrine.aissaoui@esprit.tn', 'Nesrine');
   $mail->Subject = 'Diagnostique Statut';
-  echo $token;
   $mail->Body = 'Votre Diagnostique est : '.$status; // optional - MsgHTML will create an alternate automatically
   $mail->AltBody ="";
   
@@ -31,9 +30,8 @@ try {
     echo "Message Sent OK</p>\n";
    
     echo "<script type='text/javascript'>";
-echo "alert('Verifiez-votre boite mail!');
-window.location.href='../Connexion.php';";
-echo "</script>";
+    echo "window.location.href='../AfficherDiagnostique.php';";
+    echo "</script>";
 
 
 
